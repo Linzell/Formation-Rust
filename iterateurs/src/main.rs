@@ -40,7 +40,6 @@ mod tests {
     fn appel_avec_differentes_valeurs() {
         let mut c = Cache::new(|a| a);
 
-        let v1 = c.valeur(1);
         let v2 = c.valeur(2);
 
         assert_eq!(v2, 2);
