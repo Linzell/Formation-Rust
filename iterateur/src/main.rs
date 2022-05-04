@@ -86,3 +86,20 @@ mod tests {
     );
   }
 }
+
+struct Compteur {
+  compteur: u32,
+}
+
+impl Iterator for Compteur {
+  type Item = u32;
+
+  fn next(&mut self) -> Option<Self::Item> {
+      if self.compteur < 5 {
+          self.compteur += 1;
+          Some(self.compteur)
+      } else {
+          None
+      }
+  }
+}
