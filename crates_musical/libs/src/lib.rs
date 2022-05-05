@@ -43,8 +43,6 @@ pub mod utilitaires {
       (CouleurPrimaire::Jaune, _) => CouleurSecondaire::Vert,
       (CouleurPrimaire::Bleu, _) => CouleurSecondaire::Violet
     }
-
-      // -- partie masquée ici --
       // -- unimplemented!(); --
   }
 }
