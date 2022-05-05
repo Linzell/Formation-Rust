@@ -7,6 +7,10 @@ pub use self::types::CouleurSecondaire;
 pub use self::utilitaires::mixer;
 
 pub mod types {
+
+  use std::fmt::Debug;
+
+  #[derive(Debug)]
   /// Les couleurs primaires du modèle RJB.
   pub enum CouleurPrimaire {
       Rouge,
@@ -14,6 +18,7 @@ pub mod types {
       Bleu,
   }
 
+  #[derive(Debug)]
   /// Les couleurs secondaires du modèle RJB.
   pub enum CouleurSecondaire {
       Orange,
@@ -29,7 +34,17 @@ pub mod utilitaires {
   /// Combine deux couleurs primaires dans les mêmes quantités pour
   /// créer une couleur secondaire.
   pub fn mixer(c1: CouleurPrimaire, c2: CouleurPrimaire) -> CouleurSecondaire {
+
+    match (c1, c2) {
+      (CouleurPrimaire::Rouge, CouleurPrimaire::Jaune) => CouleurSecondaire::Orange,
+      (CouleurPrimaire::Rouge, CouleurPrimaire::Bleu) => CouleurSecondaire::Vert,
+      (CouleurPrimaire::Jaune, CouleurPrimaire::Bleu) => CouleurSecondaire::Violet,
+      (CouleurPrimaire::Rouge, _) => CouleurSecondaire::Orange,
+      (CouleurPrimaire::Jaune, _) => CouleurSecondaire::Vert,
+      (CouleurPrimaire::Bleu, _) => CouleurSecondaire::Violet
+    }
+
       // -- partie masquée ici --
-      unimplemented!();
+      // -- unimplemented!(); --
   }
 }

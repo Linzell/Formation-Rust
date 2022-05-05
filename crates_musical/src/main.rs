@@ -2,7 +2,9 @@ use libs::CouleurPrimaire;
 use libs::mixer;
 
 fn main() {
-    let rouge = CouleurPrimaire::Rouge;
+    let rouge = CouleurPrimaire::Bleu;
     let jaune = CouleurPrimaire::Jaune;
-    mixer(rouge, jaune);
+    let resultat = mixer(rouge, jaune);
+
+    println!("{:?}", resultat);
 }
