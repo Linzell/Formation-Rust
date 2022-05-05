@@ -1,18 +1,18 @@
+use std::env;
 use std::error::Error;
 use std::fs;
-use std::env;
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
   let contenu = fs::read_to_string(config.nom_fichier)?;
 
   let resultats = if config.sensible_casse {
-      rechercher(&config.recherche, &contenu)
+    rechercher(&config.recherche, &contenu)
   } else {
-      rechercher_insensible_casse(&config.recherche, &contenu)
+    rechercher_insensible_casse(&config.recherche, &contenu)
   };
 
   for ligne in resultats {
-      println!("{}", ligne);
+    println!("{}", ligne);
   }
 
   Ok(())
@@ -25,15 +25,20 @@ pub struct Config {
 }
 
 impl Config {
-  pub fn new(args: &[String]) -> Result<Config, &'static str> {
-    if args.len() < 3 {
-      return Err("il n'y a pas assez d'arguments");
-    }
+  pub fn new(mut args: env::Args) -> Result<Config, &'static str> {
+    args.next();
 
-    let recherche = args[1].clone();
-    let nom_fichier = args[2].clone();
+    let recherche = match args.next() {
+      Some(arg) => arg,
+      None => return Err("nous n'avons pas de chaîne de caractères"),
+    };
 
-    let sensible_casse = env::var("GREP_INSENSIBLE_CASSE").is_err();
+    let nom_fichier = match args.next() {
+      Some(arg) => arg,
+      None => return Err("nous n'avons pas de nom de fichier"),
+    };
+
+    let sensible_casse = env::var("MINIGREP_INSENSIBLE_CASSE").is_err();
 
     Ok(Config {
       recherche,
@@ -44,31 +49,17 @@ impl Config {
 }
 
 pub fn rechercher<'a>(recherche: &str, contenu: &'a str) -> Vec<&'a str> {
-  let mut resultats = Vec::new();
-
-  for ligne in contenu.lines() {
-    if ligne.contains(recherche) {
-      resultats.push(ligne);
-    }
-  }
-
-  resultats
+  contenu
+    .lines()
+    .filter(|ligne| ligne.contains(recherche))
+    .collect()
 }
 
-pub fn rechercher_insensible_casse<'a>(
-  recherche: &str,
-  contenu: &'a str
-) -> Vec<&'a str> {
-  let recherche = recherche.to_lowercase();
-  let mut resultats = Vec::new();
-
-  for ligne in contenu.lines() {
-      if ligne.to_lowercase().contains(&recherche) {
-          resultats.push(ligne);
-      }
-  }
-
-  resultats
+pub fn rechercher_insensible_casse<'a>(recherche: &str, contenu: &'a str) -> Vec<&'a str> {
+  contenu
+    .lines()
+    .filter(|ligne| ligne.to_lowercase().contains(recherche))
+    .collect()
 }
 
 #[cfg(test)]
