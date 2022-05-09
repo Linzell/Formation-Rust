@@ -3,7 +3,7 @@ use std::ops::Deref;
 impl<T> Deref for MaBoite<T> {
     type Target = T;
 
-    fn deref(&self) -> &Self::Target {
+    fn deref(&self) -> &T {
         &self.0
     }
 }
@@ -16,10 +16,11 @@ impl<T> MaBoite<T> {
     }
 }
 
-fn main() {
-    let x = 5;
-    let y = MaBoite::new(x);
+fn saluer(nom: &str) {
+    println!("Salutations, {} !", nom);
+}
 
-    assert_eq!(5, x);
-    assert_eq!(5, *y);
+fn main() {
+    let m = MaBoite::new(String::from("Rust"));
+    saluer(&m);
 }
