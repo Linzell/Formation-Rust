@@ -11,10 +11,12 @@ use std::rc::Rc;
 
 fn main() {
   let a = Rc::new(Cons(5, Rc::new(Cons(10, Rc::new(Nil)))));
+  println!("compteur après la création de a = {}", Rc::strong_count(&a));
   let b = Cons(3, Rc::clone(&a));
-  let c = Cons(4, Rc::clone(&a));
-
-  println!("a = {:?}", a);
-  println!("b = {:?}", b);
-  println!("c = {:?}", c);
+  println!("compteur après la création de b = {}", Rc::strong_count(&a));
+  {
+      let c = Cons(4, Rc::clone(&a));
+      println!("compteur après la création de c = {}", Rc::strong_count(&a));
+  }
+  println!("compteur après que c est sorti de la portée = {}", Rc::strong_count(&a));
 }
