@@ -1,12 +1,23 @@
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
+use std::thread;
 
 fn main() {
-    let m = Mutex::new(5);
+    let compteur = Arc::new(Mutex::new(0));
+    let mut manipulateurs = vec![];
 
-    {
-        let mut nombre = m.lock().unwrap();
-        *nombre = 6;
+    for _ in 0..10 {
+        let compteur = Arc::clone(&compteur);
+        let manipulateur = thread::spawn(move || {
+            let mut nombre = compteur.lock().unwrap();
+
+            *nombre += 1;
+        });
+        manipulateurs.push(manipulateur);
     }
 
-    println!("m = {:?}", m);
+    for manipulateur in manipulateurs {
+        manipulateur.join().unwrap();
+    }
+
+    println!("Résultat : {}", *compteur.lock().unwrap());
 }
