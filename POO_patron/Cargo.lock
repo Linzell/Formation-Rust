@@ -5,3 +5,10 @@ version = 3
 [[package]]
 name = "POO_patron"
 version = "0.1.0"
+dependencies = [
+ "blog",
+]
+
+[[package]]
+name = "blog"
+version = "0.1.0"
