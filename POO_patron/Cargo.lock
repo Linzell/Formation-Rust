@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "POOpatron"
+name = "POO_patron"
 version = "0.1.0"
