@@ -1,44 +1,43 @@
 pub struct Billet {
-  etat: Option<Box<dyn Etat>>,
+  contenu: String,
+}
+
+pub struct BrouillonDeBillet {
   contenu: String,
 }
 
 impl Billet {
-  pub fn new() -> Billet {
-    Billet {
-      etat: Some(Box::new(Brouillon {})),
-      contenu: String::new(),
-    }
+  pub fn new() -> BrouillonDeBillet {
+      BrouillonDeBillet {
+          contenu: String::new(),
+      }
   }
-  pub fn ajouter_texte(&mut self, texte: &str) {
-    self.contenu.push_str(texte);
-  }
+
   pub fn contenu(&self) -> &str {
-      ""
+      &self.contenu
   }
-  pub fn demander_relecture(&mut self) {
-      if let Some(s) = self.etat.take() {
-          self.etat = Some(s.demander_relecture())
+}
+
+impl BrouillonDeBillet {
+  pub fn ajouter_texte(&mut self, texte: &str) {
+      self.contenu.push_str(texte);
+  }
+
+  pub fn demander_relecture(self) -> BilletEnRelecture {
+      BilletEnRelecture {
+          contenu: self.contenu,
       }
   }
 }
 
-trait Etat {
-  fn demander_relecture(self: Box<Self>) -> Box<dyn Etat>;
+pub struct BilletEnRelecture {
+  contenu: String,
 }
 
-struct Brouillon {}
-
-impl Etat for Brouillon {
-  fn demander_relecture(self: Box<Self>) -> Box<dyn Etat> {
-      Box::new(EnRelecture {})
-  }
-}
-
-struct EnRelecture {}
-
-impl Etat for EnRelecture {
-  fn demander_relecture(self: Box<Self>) -> Box<dyn Etat> {
-      self
+impl BilletEnRelecture {
+  pub fn approuver(self) -> Billet {
+      Billet {
+          contenu: self.contenu,
+      }
   }
 }
