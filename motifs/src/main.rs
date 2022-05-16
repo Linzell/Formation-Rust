@@ -154,6 +154,60 @@ fn main() {
   }
 
   println!("{:?}", s);
+
+  let nombres = (2, 4, 8, 16, 32);
+
+  match nombres {
+    (premier, .., dernier) => {
+      println!("Voici quelques nombres : {}, {}", premier, dernier);
+    }
+  }
+
+  let nombre = Some(4);
+
+  match nombre {
+    Some(x) if x % 2 == 0 => println!("Le nombre {} est pair", x),
+    Some(x) => println!("Le nombre {} est impair", x),
+    None => (),
+  }
+
+  let x = Some(5);
+  let y = 10;
+
+  match x {
+    Some(50) => println!("Nous obtenons 50"),
+    Some(n) if n == y => println!("Nous avons une correspondance, n = {}", n),
+    _ => println!("Cas par défaut, x = {:?}", x),
+  }
+
+  println!("Au final : x = {:?}, y = {}", x, y);
+
+  let x = 4;
+  let y = false;
+
+  match x {
+    4 | 5 | 6 if y => println!("yes"),
+    _ => println!("no"),
+  }
+
+  enum Messages {
+    Hello { id: i32 },
+  }
+
+  let msg = Messages::Hello { id: 5 };
+
+  match msg {
+    Messages::Hello {
+      id: id_variable @ 3..=7,
+    } => println!(
+      "Nous avons trouvé un id dans l'intervalle : {}",
+      id_variable
+    ),
+    Messages::Hello { id: 10..=12 } => {
+      println!("Nous avons trouvé un id dans un autre intervalle")
+    }
+    Messages::Hello { id } => println!("Nous avons trouvé un autre id : {}", id),
+  }
 }
 
 fn afficher_coordonnees(&(x, y): &(i32, i32)) {
