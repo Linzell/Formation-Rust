@@ -123,6 +123,37 @@ fn main() {
     ),
     _ => (),
   }
+  let mut valeur_du_reglage = Some(5);
+  let nouvelle_valeur_du_reglage = Some(10);
+
+  match (valeur_du_reglage, nouvelle_valeur_du_reglage) {
+    (Some(_), Some(_)) => {
+      println!("Vous ne pouvez pas écraser une valeur déjà existante");
+    }
+    _ => {
+      valeur_du_reglage = nouvelle_valeur_du_reglage;
+    }
+  }
+
+  println!("Le réglage vaut {:?}", valeur_du_reglage);
+
+  let nombres = (2, 4, 8, 16, 32);
+
+  match nombres {
+    (premier, _, troisieme, _, cinquieme) => {
+      println!(
+        "Voici quelques nombres : {}, {}, {}",
+        premier, troisieme, cinquieme
+      )
+    }
+  }
+  let s = Some(String::from("Salutations !"));
+
+  if let Some(_) = s {
+    println!("j'ai trouvé une chaine de caractères");
+  }
+
+  println!("{:?}", s);
 }
 
 fn afficher_coordonnees(&(x, y): &(i32, i32)) {
