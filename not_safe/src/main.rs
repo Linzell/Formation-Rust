@@ -1,21 +1,39 @@
 use std::slice;
 
-fn split_at_mut(slice: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32]) {
-    let len = slice.len();
-    let ptr = slice.as_mut_ptr();
+static HELLO_WORLD: &str = "Hello, world!";
 
-    assert!(mid <= len);
+static mut COMPTEUR: u32 = 0;
 
+fn ajouter_au_compteur(valeur: u32) {
     unsafe {
-        (
-            slice::from_raw_parts_mut(ptr, mid),
-            slice::from_raw_parts_mut(ptr.add(mid), len - mid),
-        )
+        COMPTEUR += valeur;
     }
+}
+
+
+
+fn split_at_mut(slice: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32]) {
+  let len = slice.len();
+  let ptr = slice.as_mut_ptr();
+
+  assert!(mid <= len);
+
+  unsafe {
+    (
+      slice::from_raw_parts_mut(ptr, mid),
+      slice::from_raw_parts_mut(ptr.add(mid), len - mid),
+    )
+  }
+}
+
+extern "C" {
+  fn abs(input: i32) -> i32;
 }
 
 fn main() {
   let mut nombre = 5;
+
+  ajouter_au_compteur(3);
 
   unsafe fn dangereux() {
     println!("Fonction à risques");
@@ -24,10 +42,14 @@ fn main() {
   let r1 = &nombre as *const i32;
   let r2 = &mut nombre as *mut i32;
 
+  println!("Cela vaut : {}", HELLO_WORLD);
+
   unsafe {
     println!("{}", *r1);
     println!("{}", *r2);
     dangereux();
+    println!("La valeur absolue de -3 selon le langage C : {}", abs(-3));
+    println!("COMPTEUR : {}", COMPTEUR);
   }
 
   let mut v = vec![1, 2, 3, 4, 5, 6];
