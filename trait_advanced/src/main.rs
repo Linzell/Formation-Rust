@@ -90,6 +90,13 @@ impl fmt::Display for Point {
   }
 }
 
+struct Enveloppe(Vec<String>);
+
+impl fmt::Display for Enveloppe {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "[{}]", self.0.join(", "))
+    }
+}
 
 fn main() {
   mesure(
@@ -109,7 +116,11 @@ fn main() {
   une_personne.voler();
 
   println!("Un bébé chien s'appelle un {}", <Chien as Animal>::nom_bebe());
-  
+
   let p = Point { x: 1, y: 3 };
   p.outline_print();
+
+  let w = Enveloppe(vec![String::from("hello"), String::from("world")]);
+  println!("w = {}", w);
+
 }
