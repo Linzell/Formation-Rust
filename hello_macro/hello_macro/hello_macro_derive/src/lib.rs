@@ -11,3 +11,15 @@ pub fn hello_macro_derive(input: TokenStream) -> TokenStream {
     // Construit l'implémentation du trait
     impl_hello_macro(&ast)
 }
+
+fn impl_hello_macro(ast: &syn::DeriveInput) -> TokenStream {
+  let nom = &ast.ident;
+  let generation = quote! {
+      impl HelloMacro for #nom {
+          fn hello_macro() {
+              println!("Hello, Macro ! Mon nom est {}", stringify!(#nom));
+          }
+      }
+  };
+  generation.into()
+}
